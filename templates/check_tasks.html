@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Tasks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="date-display {% if is_future or is_too_old %}future-date{% endif %}">
+            {{ selected_date }}
+            {% if is_future %}
+            <div class="future-notice">🚀 Future Date - Check back later!</div>
+            {% elif is_too_old %}
+            <div class="future-notice">🕒 Read-only older history (more than 5 days ago)</div>
+            {% endif %}
+        </div>
+
+        <div class="task-list {% if is_future or is_too_old %}blurred{% endif %}">
+            {% if not tasks %}
+            <div class="no-tasks">
+                <h3>No tasks added yet!</h3>
+                <p>Add some daily tasks first to start tracking your progress.</p>
+                <a href="{{ url_for('add_task') }}" class="btn">Add Tasks</a>
+            </div>
+            {% else %}
+            <form method="POST" {% if not can_edit %}onsubmit="return false;" {% endif %}>
+                {% for task in tasks %}
+                <div class="task-item">
+                    <input type="checkbox" name="done_tasks" value="{{ task.id }}" id="task-{{ task.id }}" {% if
+                        task.done %} checked {% endif %} {% if not can_edit %} disabled {% endif %}>
+                    <label for="task-{{ task.id }}" {% if not can_edit %}style="cursor: not-allowed;" {% endif %}>{{
+                        task.name }}</label>
+                    {% if task.has_text_field %}
+                    <input type="text" name="text_{{ task.id }}" value="{{ task.text_value or '' }}"
+                        placeholder="Enter details..." {% if not can_edit %} disabled {% endif %}
+                        class="task-text-input">
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                {% if can_edit %}
+                <button type="submit">Save Progress</button>
+                {% else %}
+                <button type="button" disabled style="opacity: 0.5;">Read-only date</button>
+                {% endif %}
+            </form>
+            {% endif %}
+        </div>
+
+        <div class="navigation">
+            <a href="{{ url_for('check_tasks', day=prev_day) }}" class="nav-btn nav-left">⬅ Previous Day</a>
+            <a href="{{ url_for('check_tasks', day=next_day) }}" class="nav-btn nav-right">Next Day ➡</a>
+        </div>
+
+        <a class="back-link" href="{{ url_for('home') }}">← Back Home</a>
+    </div>
+</body>
+
+</html>

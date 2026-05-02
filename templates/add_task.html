@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Tasks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Add Daily Tasks</h2>
+            <form method="POST">
+                <input type="text" name="task_name" placeholder="Enter task name" required>
+                <div style="margin: 15px 0; display: flex; align-items: center;">
+                    <input type="checkbox" name="has_text_field" id="has_text_field">
+                    <label for="has_text_field">Include text field for additional details</label>
+                </div>
+                <button type="submit">Add Task</button>
+            </form>
+
+            {% if tasks %}
+            <div class="existing-tasks">
+                <h3>Existing Tasks</h3>
+                <div class="task-list">
+                    {% for task in tasks %}
+                    <div class="task-item">
+                        <div class="task-info">
+                            <span class="task-name">{{ task.name }}</span>
+                            {% if task.has_text_field %}
+                            <span class="task-badge">📝 Has text field</span>
+                            {% endif %}
+                        </div>
+                        <form method="POST" action="{{ url_for('delete_task', task_id=task.id) }}" class="delete-form"
+                            onsubmit="return confirm('Are you sure you want to delete this task? This will also delete all completion records for this task.')">
+                            <button type="submit" class="delete-btn">🗑️ Delete</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <a class="back-link" href="{{ url_for('home') }}">← Back Home</a>
+        </div>
+    </div>
+</body>
+
+</html>
+
+</html>

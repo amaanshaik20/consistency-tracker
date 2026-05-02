@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome Amaan Shaik 👋</h1>
+            <p>Stay consistent. Build your healthy habits.</p>
+            <a class="btn" href="{{ url_for('add_task') }}">Add Tasks</a>
+            <a class="btn" href="{{ url_for('check_tasks') }}">Check Tasks</a>
+            <a class="btn" href="{{ url_for('stats') }}">View Progress</a>
+        </header>
+    </div>
+</body>
+
+</html>

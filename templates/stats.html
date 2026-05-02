@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Insights</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Progress Insights</h1>
+            <p>Track your consistency and see how well your daily habits are performing.</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ total_tasks }}</div>
+                <div class="stat-label">Total Tasks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ completed_today }}</div>
+                <div class="stat-label">Completed Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ completion_rate_today }}%</div>
+                <div class="stat-label">Today Completion</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ current_streak }}</div>
+                <div class="stat-label">Current Full-Task Streak</div>
+            </div>
+        </div>
+
+        <div class="report-card">
+            <h2>Last 7 Days Progress</h2>
+            {% if last7 %}
+            {% for day in last7 %}
+            <div class="progress-row">
+                <div class="progress-day">{{ day.date }}</div>
+                <div class="progress-meter">
+                    <div class="progress-filled" style="width: {{ day.percent }}%;"></div>
+                </div>
+                <div class="progress-value">{{ day.percent }}%</div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p class="empty-state">No completion data exists yet. Start tracking your tasks to see progress here.</p>
+            {% endif %}
+        </div>
+
+        <div class="report-card">
+            <h2>Completion Summary</h2>
+            <p><strong>Total completions recorded:</strong> {{ total_completions }}</p>
+            <p><strong>Days with progress:</strong> {{ days_tracked }}</p>
+            <p><strong>Best streak:</strong> {{ best_streak }} days</p>
+        </div>
+
+        <a class="back-link" href="{{ url_for('home') }}">← Back Home</a>
+    </div>
+</body>
+
+</html>
